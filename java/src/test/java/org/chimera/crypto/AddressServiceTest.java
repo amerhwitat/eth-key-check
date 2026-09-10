@@ -1,11 +1,16 @@
 package org.chimera.crypto;
 
 import org.chimera.crypto.service.AddressService;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public final class AddressServiceTest {
-    public static void main(String[] args) {
-        if (!"0xabcdefabcdefabcdefabcdefabcdefabcdefabcd".equals(AddressService.normalizeEthereum("0xABCDEFabcdefABCDEFabcdefABCDEFabcdefABCD"))) throw new AssertionError();
-        if (AddressService.isValidEthereum("0x1234")) throw new AssertionError();
-        System.out.println("AddressService checks passed");
+class AddressServiceTest {
+    @Test void normalizesValidAddress() {
+        assertEquals("0xabcdefabcdefabcdefabcdefabcdefabcdefabcd",
+            AddressService.normalizeEthereum("0xABCDEFabcdefABCDEFabcdefABCDEFabcdefABCD"));
+    }
+
+    @Test void rejectsMalformedAddress() {
+        assertFalse(AddressService.isValidEthereum("0x1234"));
     }
 }
