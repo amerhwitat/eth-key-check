@@ -4,11 +4,15 @@ Safe Ethereum key/address verification and Python cryptocurrency research utilit
 
 ## Scope
 
-This project derives an Ethereum address from a private key already possessed by the operator and verifies a supplied address. It validates Ethereum address syntax and emits EIP-55 checksums.
+This project verifies cryptographic material already possessed by the operator, derives public addresses, scans public blockchain state, and supports owner-authorized wallet operations through configured wallet software or already-signed transactions.
 
 It also provides a public cryptocurrency metadata catalog, SQLite research database, blockchain scanners, owner-authorized wallet transaction helpers, a Tkinter/ttk GUI, optional CNN/RNN models and an offline PPO reinforcement-learning environment.
 
-It does **not** search for, guess, infer, recover, or brute-force a private key from a public address. The database stores only non-secret key fingerprints and optional external-vault references.
+### Owner-authorized recovery
+
+The supported recovery model is **restore-and-verify**, not cracking. If the operator already has legitimate wallet recovery material or a wallet backup, the software may validate it locally, derive deterministic public addresses, compare those addresses with an owner-supplied address inventory, and hand subsequent signing to a secure wallet or external signer.
+
+The project does **not** search for, guess, infer, enumerate, or brute-force private keys or seed phrases from public addresses, balances, or transaction history. It does not recover credentials belonging to another party.
 
 ## Install
 
@@ -57,7 +61,7 @@ pytest -q
 
 ## Security boundary
 
-Private-key recovery, seed guessing, address-targeted brute force, credential harvesting and unauthorized wallet access are deliberately excluded. Public balances and transactions are observational research data. Spending operations require a wallet or externally signed transaction that the operator controls.
+Private-key cracking, seed guessing, address-targeted brute force, credential harvesting and unauthorized wallet access are deliberately excluded. Public balances and transactions are observational research data. Spending operations require a wallet or externally signed transaction that the operator controls.
 
 Burned or provably unspendable funds are reported as `BURN`/unspendable and are never treated as recoverable wallet funds.
 
@@ -66,6 +70,7 @@ Burned or provably unspendable funds are reported as `BURN`/unspendable and are 
 - ERC-55 / EIP-55 — Ethereum mixed-case checksum addresses.
 - ERC-1191 — chain-ID-aware checksum extension.
 - BIP-32 — hierarchical deterministic key derivation reference.
+- BIP-39 — mnemonic-based deterministic wallet recovery reference.
 - bitcoin-core/secp256k1 — secp256k1 reference implementation.
 - bitcoinjs/bip32 — BIP-32 implementation.
 - scure-bip32 — BIP-32 implementation.
