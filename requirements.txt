@@ -1,0 +1,3 @@
+hdwallet
+eth-utils
+pytest
