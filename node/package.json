@@ -1,0 +1,10 @@
+{
+  "name": "chimera-crypto-node",
+  "version": "1.0.0",
+  "description": "Chimera II cross-language cryptocurrency research and verification layer",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "exports": { ".": "./src/index.js" },
+  "scripts": { "test": "node --test", "verify": "node ./src/cli.js" },
+  "license": "GPL-3.0-or-later"
+}
