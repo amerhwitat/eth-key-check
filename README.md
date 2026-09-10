@@ -1,82 +1,90 @@
 # eth-key-check
 
-Safe Ethereum key/address verification and Python cryptocurrency research utilities for Chimera II research.
+Safe Ethereum key/address verification and cross-language cryptocurrency research utilities for Chimera II research.
+
+## Cross-language solution
+
+The repository now has four aligned implementation tracks:
+
+| Track | Location | Role |
+|---|---|---|
+| Python | `python/chimera_crypto/` | Reference research package and compatibility layer |
+| Node.js | `node/` | ESM CLI/integration implementation |
+| Java | `java/` | JavaFX desktop implementation |
+| C++ | `cpp/` | C++20/Qt 6 native implementation |
+
+The implementations share the `chimera.crypto.interop` envelope and deterministic public/synthetic conformance data. Existing Python scripts remain available for compatibility.
 
 ## Scope
 
 This project verifies cryptographic material already possessed by the operator, derives public addresses, scans public blockchain state, and supports owner-authorized wallet operations through configured wallet software or already-signed transactions.
 
-It also provides a public cryptocurrency metadata catalog, SQLite research database, blockchain scanners, owner-authorized wallet transaction helpers, a Tkinter/ttk GUI, optional CNN/RNN models and an offline PPO reinforcement-learning environment.
+It provides a public cryptocurrency metadata catalog, SQLite research database, blockchain scanners, owner-authorized wallet transaction helpers, desktop GUIs, optional CNN/RNN models, and offline PPO reinforcement-learning research.
 
 ### Owner-authorized recovery
 
 The supported recovery model is **restore-and-verify**, not cracking. If the operator already has legitimate wallet recovery material or a wallet backup, the software may validate it locally, derive deterministic public addresses, compare those addresses with an owner-supplied address inventory, and hand subsequent signing to a secure wallet or external signer.
 
-The project does **not** search for, guess, infer, enumerate, or brute-force private keys or seed phrases from public addresses, balances, or transaction history. It does not recover credentials belonging to another party.
+The project does **not** search for, guess, infer, enumerate, or brute-force private keys or seed phrases from public addresses, balances, or transaction history.
 
-## Install
+## Node.js
+
+```bash
+cd node
+npm test
+npm run verify -- 0x0000000000000000000000000000000000000000
+```
+
+Node uses ECMAScript modules and an explicit package export surface. The Node layer is intentionally aligned with the Python/Java/C++ validation and audit contracts.
+
+## Python
 
 ```bash
 python -m pip install -r requirements.txt
-# Optional ML/RL stack:
 python -m pip install -r requirements-ml.txt
+pytest -q
 ```
 
-## Usage
+The canonical package facade is `python/chimera_crypto/`; legacy entry points remain supported.
+
+## Java
+
+Requirements: JDK 21 and Maven.
 
 ```bash
-python project.py <existing-private-key> <ethereum-address>
-python project.py <existing-private-key> <ethereum-address> --checksum
-python crypto_gui.py
-python crypto_ai_gui.py
+cd java
+mvn test
+mvn javafx:run
 ```
 
-For Ethereum public balance scanning and signed-transaction broadcast, set `CHIMERA_ETH_RPC_URL` to an Ethereum JSON-RPC endpoint. Ethereum sending uses `eth_sendRawTransaction`; signing is intentionally external. Bitcoin Core credentials use `CHIMERA_BTC_RPC_USER` and `CHIMERA_BTC_RPC_PASSWORD`.
+The JavaFX application provides Dashboard, Verification, Blockchain, AI/RL, C8192/R8192 and Audit views.
 
-Never place real wallet secrets in source control, issue reports, CI logs, command histories, or test fixtures.
+## C++ / Qt
+
+Requirements: C++20, CMake 3.21+ and Qt 6.
+
+```bash
+cd cpp
+cmake -S . -B build
+cmake --build build
+ctest --test-dir build --output-on-failure
+```
+
+The Qt application and `chimera_crypto_core` library share the same deterministic validation contract.
 
 ## Wallet operations
 
-- **Receive BTC:** `BitcoinCoreRPC.getnewaddress()` requests a fresh address from an authenticated Bitcoin Core wallet.
-- **Send BTC:** `BitcoinCoreRPC.send_to_address()` delegates signing and authorization to the configured Bitcoin Core wallet.
-- **Send ETH:** `EthereumRPC.send_raw_transaction()` broadcasts an already-signed transaction; private keys never enter this library.
-- **Burn addresses:** the scanner may classify and monitor known/provably unspendable addresses, but it never attempts to recover or move funds from them.
+- Receive BTC through an authenticated Bitcoin Core wallet.
+- Send BTC through an operator-controlled Bitcoin Core wallet.
+- Broadcast an already-signed Ethereum transaction.
+- Monitor/classify burn or provably unspendable addresses without attempting to move their funds.
 
-Transaction submission should be paired with explicit user confirmation, fee/nonce validation, chain/network checks, and post-broadcast receipt monitoring.
-
-## Components
-
-- `crypto_catalog.py` — public coin/protocol metadata.
-- `crypto_database.py` — SQLite addresses, balances, transactions and safe key fingerprints.
-- `balance_scanner.py` — Ethereum and Bitcoin Core observation plus owner-authorized transaction/receiving RPC helpers.
-- `crypto_ml.py` — optional PyTorch CNN and GRU/RNN models.
-- `crypto_rl.py` — offline Gymnasium + Stable-Baselines3 PPO environment.
-- `crypto_ai_gui.py` — unified research GUI.
-
-## Tests
-
-```bash
-pytest -q
-```
+Never place real wallet secrets in source control, issue reports, CI logs, command histories, or test fixtures.
 
 ## Security boundary
 
 Private-key cracking, seed guessing, address-targeted brute force, credential harvesting and unauthorized wallet access are deliberately excluded. Public balances and transactions are observational research data. Spending operations require a wallet or externally signed transaction that the operator controls.
 
-Burned or provably unspendable funds are reported as `BURN`/unspendable and are never treated as recoverable wallet funds.
-
-## Standards and provenance
-
-- ERC-55 / EIP-55 — Ethereum mixed-case checksum addresses.
-- ERC-1191 — chain-ID-aware checksum extension.
-- BIP-32 — hierarchical deterministic key derivation reference.
-- BIP-39 — mnemonic-based deterministic wallet recovery reference.
-- bitcoin-core/secp256k1 — secp256k1 reference implementation.
-- bitcoinjs/bip32 — BIP-32 implementation.
-- scure-bip32 — BIP-32 implementation.
-
-See `docs/CRYPTO_INTEROPERABILITY.md`, `CRYPTO_RESEARCH.md` and `docs/CRYPTO_AI_ARCHITECTURE.md`.
-
 ## Chimera II
 
-This repository is one component of the Chimera II OS research ecosystem and can supply deterministic crypto/AI test workloads to its C8192/R8192 ISA and emulator research.
+This repository supplies deterministic crypto/AI workloads to Chimera II OS C8192/R8192 ISA and emulator research. Cross-language interoperability is documented in `docs/CRYPTO_INTEROPERABILITY.md` and the consolidation plan in `docs/superpowers/plans/2026-09-10-cross-language-consolidation.md`.
