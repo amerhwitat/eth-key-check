@@ -6,7 +6,7 @@ Safe Ethereum key/address verification and Python cryptocurrency research utilit
 
 This project derives an Ethereum address from a private key already possessed by the operator and verifies a supplied address. It validates Ethereum address syntax and emits EIP-55 checksums.
 
-It also provides a public cryptocurrency metadata catalog, SQLite research database, read-only blockchain balance scanners, a Tkinter/ttk GUI, optional CNN/RNN models and an offline PPO reinforcement-learning environment.
+It also provides a public cryptocurrency metadata catalog, SQLite research database, blockchain scanners, owner-authorized wallet transaction helpers, a Tkinter/ttk GUI, optional CNN/RNN models and an offline PPO reinforcement-learning environment.
 
 It does **not** search for, guess, infer, recover, or brute-force a private key from a public address. The database stores only non-secret key fingerprints and optional external-vault references.
 
@@ -27,15 +27,24 @@ python crypto_gui.py
 python crypto_ai_gui.py
 ```
 
-For Ethereum public balance scanning, set `CHIMERA_ETH_RPC_URL` to a read-only JSON-RPC endpoint. Bitcoin Core RPC credentials use `CHIMERA_BTC_RPC_USER` and `CHIMERA_BTC_RPC_PASSWORD`.
+For Ethereum public balance scanning and signed-transaction broadcast, set `CHIMERA_ETH_RPC_URL` to an Ethereum JSON-RPC endpoint. Ethereum sending uses `eth_sendRawTransaction`; signing is intentionally external. Bitcoin Core credentials use `CHIMERA_BTC_RPC_USER` and `CHIMERA_BTC_RPC_PASSWORD`.
 
 Never place real wallet secrets in source control, issue reports, CI logs, command histories, or test fixtures.
+
+## Wallet operations
+
+- **Receive BTC:** `BitcoinCoreRPC.getnewaddress()` requests a fresh address from an authenticated Bitcoin Core wallet.
+- **Send BTC:** `BitcoinCoreRPC.send_to_address()` delegates signing and authorization to the configured Bitcoin Core wallet.
+- **Send ETH:** `EthereumRPC.send_raw_transaction()` broadcasts an already-signed transaction; private keys never enter this library.
+- **Burn addresses:** the scanner may classify and monitor known/provably unspendable addresses, but it never attempts to recover or move funds from them.
+
+Transaction submission should be paired with explicit user confirmation, fee/nonce validation, chain/network checks, and post-broadcast receipt monitoring.
 
 ## Components
 
 - `crypto_catalog.py` — public coin/protocol metadata.
 - `crypto_database.py` — SQLite addresses, balances, transactions and safe key fingerprints.
-- `balance_scanner.py` — read-only Ethereum and Bitcoin Core adapters.
+- `balance_scanner.py` — Ethereum and Bitcoin Core observation plus owner-authorized transaction/receiving RPC helpers.
 - `crypto_ml.py` — optional PyTorch CNN and GRU/RNN models.
 - `crypto_rl.py` — offline Gymnasium + Stable-Baselines3 PPO environment.
 - `crypto_ai_gui.py` — unified research GUI.
@@ -48,7 +57,9 @@ pytest -q
 
 ## Security boundary
 
-Private-key recovery, seed guessing, address-targeted brute force, credential harvesting and unauthorized wallet access are deliberately excluded. Public balances and transactions are observational research data.
+Private-key recovery, seed guessing, address-targeted brute force, credential harvesting and unauthorized wallet access are deliberately excluded. Public balances and transactions are observational research data. Spending operations require a wallet or externally signed transaction that the operator controls.
+
+Burned or provably unspendable funds are reported as `BURN`/unspendable and are never treated as recoverable wallet funds.
 
 ## Standards and provenance
 
