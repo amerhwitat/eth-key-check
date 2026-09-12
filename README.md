@@ -2,6 +2,20 @@
 
 Safe Ethereum key/address verification and cross-language cryptocurrency research utilities for Chimera II research.
 
+## Complete source-code citation index
+
+| Area | Source |
+|---|---|
+| Python implementation | [python/](python/) |
+| Node.js implementation | [node/](node/) |
+| Java implementation | [java/](java/) |
+| C++ implementation | [cpp/](cpp/) |
+| Apple implementation | [apple/](apple/) |
+| Documentation/contracts | [docs/](docs/) |
+| Complete tracked repository | [source tree](.) |
+
+These links are the README-level citations for all maintained implementation areas; component directories remain the detailed source record.
+
 ## Centralized Apple Objective-C + Flutter
 
 The Apple companion is maintained in [`general/Apple-Implementations/eth-key-check`](https://github.com/amerhwitat/general/tree/master/Apple-Implementations/eth-key-check). It combines an Objective-C/Xcode native boundary with Flutter iOS/macOS UI while preserving the repository's owner-authorized crypto security model.
