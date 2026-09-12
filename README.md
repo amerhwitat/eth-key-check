@@ -12,8 +12,13 @@ The repository now has four aligned implementation tracks:
 | Node.js | `node/` | ESM CLI/integration implementation |
 | Java | `java/` | JavaFX desktop implementation |
 | C++ | `cpp/` | C++20/Qt 6 native implementation |
+| Apple | `apple/` | SwiftUI/Xcode iOS/iPadOS and macOS application boundary |
 
 The implementations share the `chimera.crypto.interop` envelope and deterministic public/synthetic conformance data. Existing Python scripts remain available for compatibility.
+
+## Apple build
+
+`apple/project.yml` is an XcodeGen specification. On macOS install Xcode/XcodeGen, run `xcodegen generate --spec apple/project.yml`, then build/archive/export through Xcode. The Apple shell preserves the same safe owner-authorized verification boundary; it does not perform private-key cracking, seed guessing or unauthorized credential recovery.
 
 ## Scope
 
