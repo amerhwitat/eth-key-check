@@ -1,0 +1,23 @@
+name: EthKeyCheckApple
+options:
+  bundleIdPrefix: com.amerhwitat
+  deploymentTarget:
+    iOS: "17.0"
+    macOS: "14.0"
+targets:
+  EthKeyCheckApple:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.amerhwitat.ethkeycheck
+        GENERATE_INFOPLIST_FILE: YES
+  EthKeyCheckMac:
+    type: application
+    platform: macOS
+    sources: [Sources]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.amerhwitat.ethkeycheck.mac
+        GENERATE_INFOPLIST_FILE: YES
