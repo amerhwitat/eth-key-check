@@ -1,0 +1,1 @@
+const v=document.querySelector('#v'),o=document.querySelector('#out');v.oninput=()=>{const s=v.value.trim();o.textContent=/^0x[0-9a-fA-F]{64}$/.test(s)?'64-hex-byte private-key format':'Not a 32-byte hex private-key format';};
