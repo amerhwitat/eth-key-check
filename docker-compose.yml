@@ -1,0 +1,6 @@
+services:
+  app:
+    build: .
+    image: amerhwitat/eth-key-check:local
+    container_name: eth-key-check
+    init: true
