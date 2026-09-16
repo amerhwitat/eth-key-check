@@ -1,0 +1,1 @@
+{"$schema":"CHM-APP-INTEGRATION-1","application":"eth-key-check","target":"Chimera II OS","integration_points":["Aurora Crypto tools","local cryptography APIs","Nucleus/Hive"],"purpose":"Expose safe local/public-address cryptography analysis through Chimera." ,"security":"No private-key brute forcing, secret harvesting, wallet draining or unauthorized transfers."}
